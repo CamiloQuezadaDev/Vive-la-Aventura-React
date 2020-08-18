@@ -4,10 +4,25 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import {ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import {createHttpLink } from 'apollo-link-http';
+
+
+const httpLink = createHttpLink({
+  uri: 'http://localhost:3000/graphql'
+});
+
+const client = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache({
+    addTypename: false
+  })
+});
+
 ReactDOM.render(
-  <React.StrictMode>
+  <ApolloProvider client={client}>
     <App />
-  </React.StrictMode>,
+  </ApolloProvider>,
   document.getElementById('root')
 );
 
