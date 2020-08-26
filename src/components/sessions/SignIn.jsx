@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Redirect } from "react-router-dom";
 import Container from '@material-ui/core/Container';
 import { CssBaseline, Typography, TextField } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
@@ -106,6 +107,7 @@ const SignIn = () => {
                             value={password}
                             onChange={ handleChange }
                         />
+
                         <Button
                             type="submit"
                             fullWidth 
