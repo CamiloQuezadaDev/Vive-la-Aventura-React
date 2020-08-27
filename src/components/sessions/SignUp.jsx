@@ -18,6 +18,8 @@ import { useMutation,useQuery } from '@apollo/react-hooks';
 import { USER_SIGN_UP } from '../../data/mutations';
 import { SERVICES } from '../../data/queries'; 
 
+import { useNavigate } from 'react-router-dom';
+
 const SignUp = () => {
 
     const useStyles = makeStyles((theme)=> ({
@@ -66,6 +68,7 @@ const SignUp = () => {
 
     const { companyName, firstName,lastName,email,password,serviceId} = user; 
 
+    const navigate = useNavigate();
     //EVENTS 
 
     const handleChange = e => {
@@ -87,9 +90,11 @@ const SignUp = () => {
             },
         }).then(async({data}) => {
             const {errors,success} = data.userSignUp
-            if(!success){
+            if(success){
+                navigate('/');
+            } else {
                 alert(errors);
-            } 
+            }
         }).catch(error => {
             alert(error);
         });
@@ -142,7 +147,6 @@ const SignUp = () => {
                                     required 
                                     fullWidth
                                     label="Last Name"
-                                    autoFocus
                                     onChange={ handleChange }
                                     value={lastName}
                                 />

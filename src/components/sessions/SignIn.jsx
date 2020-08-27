@@ -11,6 +11,8 @@ import Link from '@material-ui/core/Link';
 import { useMutation } from '@apollo/react-hooks';
 import { USER_SIGN_IN } from '../../data/mutations';
 
+import { useNavigate } from 'react-router-dom';
+
 const SignIn = () => {
 
     const [login, updateLogin] = useState({
@@ -19,6 +21,8 @@ const SignIn = () => {
     }); 
 
     const [userSignIn] = useMutation(USER_SIGN_IN);
+
+    const navigate = useNavigate();
 
     const handleChange = e => {
         const {name, value} = e.target; 
@@ -41,6 +45,7 @@ const SignIn = () => {
                 alert(errors);
             } else {
                 localStorage.setItem('AUTH_TOKEN',token);
+                navigate('/');
             }
         }).catch(error => {
             alert(error);

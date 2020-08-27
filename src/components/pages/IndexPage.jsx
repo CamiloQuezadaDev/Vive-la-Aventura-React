@@ -11,6 +11,8 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
+import { useNavigate } from 'react-router-dom';
+
 const IndexPage = () => {
 
     const authToken = localStorage.getItem('AUTH_TOKEN');
@@ -29,8 +31,9 @@ const IndexPage = () => {
 
     const classes = useStyles();
 
-    const [anchorEl, setAnchorEl] = useState(null);
+    const navigate = useNavigate();
 
+    const [anchorEl, setAnchorEl] = useState(null);
 
     const openUserIcon = Boolean(anchorEl);
 
@@ -84,7 +87,10 @@ const IndexPage = () => {
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"
                                 aria-haspopup="true"
-                                onClick={ () => { localStorage.removeItem('AUTH_TOKEN') }}
+                                onClick={ () => { 
+                                    localStorage.removeItem('AUTH_TOKEN');
+                                    navigate('/');
+                                }}
                             color="inherit"
                             >
                                 <ExitToAppIcon />
