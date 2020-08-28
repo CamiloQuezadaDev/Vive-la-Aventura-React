@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { Redirect } from "react-router-dom";
+import React, { useState } from 'react';
 import Container from '@material-ui/core/Container';
 import { CssBaseline, Typography, TextField } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
@@ -10,6 +9,8 @@ import Link from '@material-ui/core/Link';
 
 import { useMutation } from '@apollo/react-hooks';
 import { USER_SIGN_IN } from '../../data/mutations';
+
+import {AUTH_TOKEN} from '../../constants';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -44,7 +45,7 @@ const SignIn = () => {
             if(!exists){
                 alert(errors);
             } else {
-                localStorage.setItem('AUTH_TOKEN',token);
+                localStorage.setItem(AUTH_TOKEN,token);
                 navigate('/');
             }
         }).catch(error => {

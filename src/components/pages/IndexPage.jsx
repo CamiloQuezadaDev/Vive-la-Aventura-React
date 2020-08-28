@@ -11,11 +11,13 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
+import {AUTH_TOKEN} from '../../constants';
+
 import { useNavigate } from 'react-router-dom';
 
 const IndexPage = () => {
 
-    const authToken = localStorage.getItem('AUTH_TOKEN');
+    const authToken = localStorage.getItem(AUTH_TOKEN);
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -88,7 +90,7 @@ const IndexPage = () => {
                                 aria-controls="menu-appbar"
                                 aria-haspopup="true"
                                 onClick={ () => { 
-                                    localStorage.removeItem('AUTH_TOKEN');
+                                    localStorage.removeItem(AUTH_TOKEN);
                                     navigate('/');
                                 }}
                             color="inherit"
