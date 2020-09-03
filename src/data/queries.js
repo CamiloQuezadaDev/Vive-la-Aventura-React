@@ -6,4 +6,15 @@ export const SERVICES = gql`
             id 
             name
         }
-    }`;
+}`;
+
+export const ME = gql`
+    query me {
+        me {
+            id
+            firstName
+            lastName
+            fullName
+        }
+    }
+`

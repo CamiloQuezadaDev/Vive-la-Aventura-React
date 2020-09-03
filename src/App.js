@@ -5,10 +5,15 @@ import IndexPage from './components/pages/IndexPage'
 import SignIn from './components/sessions/SignIn'
 import SignUp from './components/sessions/SignUp'
 
+import ManageIndex from './components/manage/ManageIndex';
+
 function App() {
   return (
     <Router>
-      <Routes>  
+      <Routes>
+        <Route path='/dashboard'>
+          <ManageIndex />
+        </Route>
         <Route path='/signUp'>
           <SignUp />
         </Route>
@@ -18,6 +23,7 @@ function App() {
         <Route  exact path='/'>
           <IndexPage />
         </Route>
+
       </Routes>
     </Router>
   );

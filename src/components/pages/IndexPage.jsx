@@ -1,5 +1,5 @@
-import React, { useState }from 'react'
-import { AppBar, IconButton, Typography, Toolbar,  } from '@material-ui/core';
+import React, { useState, useContext }from 'react'
+import { AppBar, IconButton, Typography, Toolbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
@@ -11,13 +11,14 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
-import {AUTH_TOKEN} from '../../constants';
-
 import { useNavigate } from 'react-router-dom';
 
-const IndexPage = () => {
+import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
-    const authToken = localStorage.getItem(AUTH_TOKEN);
+import { SessionContext} from '../../contexts/SessionContext'; 
+
+
+const IndexPage = () => {
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -47,6 +48,17 @@ const IndexPage = () => {
         setAnchorEl(null);
     };
 
+    const mapStyles = {
+        height: "100vh",
+        width: "100%"
+    }; 
+
+    const defaultCenter = {
+        lat: -38.73965, lng: -72.59842
+    }
+
+    const { data, refetch } = useContext(SessionContext); 
+    const loggedIn = data.me !== null; 
     return (
         <div className={classes.root}>
             <AppBar position="static" color="primary">
@@ -54,8 +66,9 @@ const IndexPage = () => {
                     <Typography className={classes.title} variant="h6" noWrap>
                         VIVE LA AVENTURA    
                     </Typography>
-                    { authToken ? (
+                    { loggedIn ? (
                         <>
+                            {loggedIn ? data.me.firstName : '' } 
                             <IconButton
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"
@@ -80,8 +93,12 @@ const IndexPage = () => {
                                 open={openUserIcon}
                                 onClose={handleClose}
                             >
-                                <MenuItem>
-                                    <DashboardIcon /> DashBoard
+                                <MenuItem
+                                    onClick={ () => {
+                                        navigate('/dashboard')
+                                    }}
+                                >
+                                        <DashboardIcon />DashBoard
                                 </MenuItem>
                             </Menu>
 
@@ -90,11 +107,12 @@ const IndexPage = () => {
                                 aria-controls="menu-appbar"
                                 aria-haspopup="true"
                                 onClick={ () => { 
-                                    localStorage.removeItem(AUTH_TOKEN);
+                                    localStorage.removeItem('AUTH_TOKEN','');
+                                    refetch();
                                     navigate('/');
                                 }}
                             color="inherit"
-                            >
+                            >   
                                 <ExitToAppIcon />
                             </IconButton>
                         </>
@@ -110,8 +128,14 @@ const IndexPage = () => {
                 )}
             </Toolbar>
         </AppBar>
-        </div>
-        
+        <LoadScript googleMapsApiKey='AIzaSyAIc3lygf3YkpNC09MksffMc8_PM89GNKE'>
+            <GoogleMap
+                mapContainerStyle={mapStyles}
+                zoom={13}
+                center={defaultCenter}
+            />
+        </LoadScript>
+    </div>
     );
 }
 

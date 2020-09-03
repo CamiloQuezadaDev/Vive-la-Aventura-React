@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Container from '@material-ui/core/Container';
 import { CssBaseline, Typography, TextField } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
@@ -10,9 +10,10 @@ import Link from '@material-ui/core/Link';
 import { useMutation } from '@apollo/react-hooks';
 import { USER_SIGN_IN } from '../../data/mutations';
 
-import {AUTH_TOKEN} from '../../constants';
-
 import { useNavigate } from 'react-router-dom';
+
+import { SessionContext } from '../../contexts/SessionContext'; 
+
 
 const SignIn = () => {
 
@@ -24,6 +25,8 @@ const SignIn = () => {
     const [userSignIn] = useMutation(USER_SIGN_IN);
 
     const navigate = useNavigate();
+
+    const { refetch } = useContext(SessionContext); 
 
     const handleChange = e => {
         const {name, value} = e.target; 
@@ -41,15 +44,16 @@ const SignIn = () => {
                 input: login
             }
         }).then(async({data}) => {
-            const {token,exists,errors} = data.userSignIn;
-            if(!exists){
+            const { token,exists,errors } = data.userSignIn;
+            if( errors.length > 0 ){
                 alert(errors);
             } else {
-                localStorage.setItem(AUTH_TOKEN,token);
+                localStorage.setItem('AUTH_TOKEN',token);
+                await refetch();
                 navigate('/');
             }
-        }).catch(error => {
-            alert(error);
+        }).catch(errors => {
+            alert(errors);
         });
     }
 
