@@ -2,13 +2,29 @@ import React from 'react'
 
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import { Button } from '@material-ui/core';
+import DialogContent from '@material-ui/core/DialogContent';
+import TextField from '@material-ui/core/TextField';
+
+import { Button, DialogActions } from '@material-ui/core';
 
 const SubsidiaryForm = ({ openDialog , handleDialogClose }) => {
     return ( 
-        <Dialog open={openDialog}>
-            <DialogTitle>I Lose myself</DialogTitle>
-            <Button onClick={handleDialogClose}>Cerrar</Button>
+        <Dialog fullWidth  open={openDialog} onClose={handleDialogClose}>
+            <form>
+                <DialogTitle>Agregar Sucursal</DialogTitle>
+                <DialogContent>
+                    <TextField 
+                        variant="outlined"
+                        fullWidth
+                        label="Dirección"
+                        name="subsidiary"
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogClose} color="primary">Cancel</Button>
+                    <Button variant="contained" type="submit" color="primary">Agregar</Button>
+                </DialogActions>
+            </form>
         </Dialog>
     );
 }
