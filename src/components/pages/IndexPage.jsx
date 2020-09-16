@@ -1,12 +1,13 @@
 import React, { useState, useContext }from 'react'
 import { AppBar, IconButton, Typography, Toolbar } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
 
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+
 
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -19,6 +20,7 @@ import { SessionContext} from '../../contexts/SessionContext';
 
 
 const IndexPage = () => {
+    const navigate = useNavigate();
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -32,9 +34,16 @@ const IndexPage = () => {
         }
     }));
 
+    const theme = createMuiTheme({
+        palette: {
+            primary: {
+                main: '#388e3c'
+            }
+        }
+    });
+
     const classes = useStyles();
 
-    const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -60,82 +69,85 @@ const IndexPage = () => {
     const { data, refetch } = useContext(SessionContext); 
     const loggedIn = data.me !== null; 
     return (
-        <div className={classes.root}>
-            <AppBar position="static" color="primary">
-                <Toolbar>
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        VIVE LA AVENTURA    
-                    </Typography>
-                    { loggedIn ? (
-                        <>
-                            {loggedIn ? data.me.firstName : '' } 
-                            <IconButton
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                color="inherit"
-                                onClick={handleMenu}
-                            >
-                                <AccountCircle />
-                            </IconButton>
-
-                            <Menu
-                                anchorEl={anchorEl}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={openUserIcon}
-                                onClose={handleClose}
-                            >
-                                <MenuItem
-                                    onClick={ () => {
-                                        navigate('/dashboard')
-                                    }}
+        <ThemeProvider theme={theme}>
+            <div className={classes.root}>
+                <AppBar position="static" color="primary">
+                    <Toolbar>
+                        <Typography className={classes.title} variant="h6" noWrap>
+                            VIVE LA AVENTURA    
+                        </Typography>
+                        { loggedIn ? (
+                            <>
+                                {loggedIn ? data.me.firstName : '' } 
+                                <IconButton
+                                    aria-label="account of current user"
+                                    aria-controls="menu-appbar"
+                                    aria-haspopup="true"
+                                    color="inherit"
+                                    onClick={handleMenu}
                                 >
-                                        <DashboardIcon />DashBoard
-                                </MenuItem>
-                            </Menu>
+                                    <AccountCircle />
+                                </IconButton>
 
-                            <IconButton
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={ () => { 
-                                    localStorage.removeItem('AUTH_TOKEN','');
-                                    refetch();
-                                    navigate('/');
-                                }}
-                            color="inherit"
-                            >   
-                                <ExitToAppIcon />
-                            </IconButton>
-                        </>
-                    ) : (
-                    <>
-                        <Button href="/signIn" color="inherit">
-                            Sign In
-                        </Button>
-                        <Button href="/signUp" color="inherit">
-                            Sign Up
-                        </Button>
-                    </>
-                )}
-            </Toolbar>
-        </AppBar>
-        <LoadScript googleMapsApiKey='AIzaSyAIc3lygf3YkpNC09MksffMc8_PM89GNKE'>
-            <GoogleMap
-                mapContainerStyle={mapStyles}
-                zoom={13}
-                center={defaultCenter}
-            />
-        </LoadScript>
-    </div>
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    open={openUserIcon}
+                                    onClose={handleClose}
+                                >
+                                    <MenuItem
+                                        onClick={ () => {
+                                            navigate('/dashboard')
+                                        }}
+                                    >
+                                        <DashboardIcon />DashBoard
+                                    </MenuItem>
+                                </Menu>
+
+                                <IconButton
+                                    aria-label="account of current user"
+                                    aria-controls="menu-appbar"
+                                    aria-haspopup="true"
+                                    onClick={ () => { 
+                                        localStorage.removeItem('AUTH_TOKEN','');
+                                        refetch();
+                                        navigate('/');
+                                    }}
+                                color="inherit"
+                                >   
+                                    <ExitToAppIcon />
+                                </IconButton>
+                            </>
+                        ) : (
+                        <>
+                                <Button href="/signIn" color="inherit">
+                                    Sign In
+                                </Button>
+                                <Button href="/signUp" color="inherit">
+                                    Sign Up
+                                </Button>
+                            </>
+                        )}
+                    </Toolbar>
+                </AppBar>
+                <LoadScript googleMapsApiKey='AIzaSyAIc3lygf3YkpNC09MksffMc8_PM89GNKE'>
+                    <GoogleMap
+                        mapContainerStyle={mapStyles}
+                        zoom={13}
+                        center={defaultCenter}
+                    />
+                </LoadScript>
+            </div>
+        </ThemeProvider>
+        
     );
 }
 

@@ -44,7 +44,7 @@ const SignIn = () => {
                 input: login
             }
         }).then(async({data}) => {
-            const { token,exists,errors } = data.userSignIn;
+            const { token,errors } = data.userSignIn;
             if( errors.length > 0 ){
                 alert(errors);
             } else {
