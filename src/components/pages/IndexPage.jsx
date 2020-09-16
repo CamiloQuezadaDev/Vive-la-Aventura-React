@@ -129,10 +129,10 @@ const IndexPage = () => {
                         ) : (
                         <>
                                 <Button href="/signIn" color="inherit">
-                                    Sign In
+                                    Ingresar
                                 </Button>
                                 <Button href="/signUp" color="inherit">
-                                    Sign Up
+                                    Registrarse
                                 </Button>
                             </>
                         )}

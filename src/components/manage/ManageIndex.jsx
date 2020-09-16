@@ -20,11 +20,16 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HomeIcon from '@material-ui/icons/Home';
+import AddIcon from '@material-ui/icons/Add';
+
+import Fab from '@material-ui/core/Fab';
 
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
 
-import MainListItems from './ListItems'; 
+import ManageNavigation from './ManageNavigation';
+import SubsidiaryForm from '../subsidiary/SubsidiaryForm'; 
+
 
 
 
@@ -120,6 +125,12 @@ const useStyles = makeStyles((theme) =>({
 
     fixedHeight: {
         height: 240
+    },
+
+    fabIcon: {
+        position: 'absolute',
+        top:100,
+        right: 50
     }
 })); 
 
@@ -133,30 +144,49 @@ const defaultCenter = {
 }
 
 const ManageIndex = () => {
-    const navigate = useNavigate();
+
     const classes = useStyles(); 
+    const navigate = useNavigate();
 
-    const [open, setOpen] = useState(false); 
+    // DRAWER STATE
+    const [openDrawer, setOpenDrawer] = useState(false); 
 
+    // DRAWER EVENTS
     const handleDrawerOpen = () => {
-        setOpen(true);
+        setOpenDrawer(true);
     }
 
     const handleDrawerClose = () => {
-        setOpen(false);
+        setOpenDrawer(false);
     }
 
+
+    // MENU STATE
     const [anchorEl, setAnchorEl] = useState(null);
 
     const openUserIcon = Boolean(anchorEl);
 
+    // MENU EVENTS
     const handleMenu = event => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleMenuClose = () => {
         setAnchorEl(null);
     };
+
+
+    const [openDialog, setOpenDialog ] = useState(false);
+
+    const handleDialogOpen = () => {
+        setOpenDialog(true);
+    }
+
+    const handleDialogClose = () => {
+        setOpenDialog(false);
+    }
+
+
 
     const { data, refetch  } = useContext(SessionContext); 
     const loggedIn = data.me !== null; 
@@ -166,14 +196,14 @@ const ManageIndex = () => {
         <ThemeProvider theme={theme}>
             <div className={classes.root}>
                 <CssBaseline />
-                <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+                <AppBar position="absolute" className={clsx(classes.appBar, openDrawer && classes.appBarShift)}>
                     <Toolbar clasName={classes.toolbar}>
                         <IconButton
                             edge="start"
                             color="inherit"
                             aria-label="open drawer"
                             onClick={handleDrawerOpen}
-                            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+                            className={clsx(classes.menuButton, openDrawer && classes.menuButtonHidden)}
                         >
                             <MenuIcon />
                         </IconButton>
@@ -202,7 +232,7 @@ const ManageIndex = () => {
                                         horizontal: 'right',
                                     }}
                                     open={openUserIcon}
-                                    onClose={handleClose}
+                                    onClose={handleMenuClose}
                                 >
                                     <MenuItem
                                         onClick={ () => {
@@ -231,9 +261,9 @@ const ManageIndex = () => {
                 <Drawer
                     variant="permanent"
                     classes={{
-                        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+                        paper: clsx(classes.drawerPaper, !openDrawer && classes.drawerPaperClose),
                     }}
-                    open={open}
+                    open={openDrawer}
                 >
                     <div className={classes.toolbarIcon}>
                         <IconButton
@@ -244,7 +274,7 @@ const ManageIndex = () => {
                     </div>
                     <Divider />
                     <List>
-                        <MainListItems navigate={navigate} />
+                        <ManageNavigation  />
                     </List>
                 </Drawer>
                 <LoadScript googleMapsApiKey='AIzaSyAIc3lygf3YkpNC09MksffMc8_PM89GNKE'>
@@ -254,6 +284,10 @@ const ManageIndex = () => {
                         center={defaultCenter}
                     />
                 </LoadScript>
+                <Fab color="primary" aria-label="add" className={classes.fabIcon} onClick={handleDialogOpen}>
+                    <AddIcon />
+                </Fab>
+                < SubsidiaryForm  openDialog={openDialog} handleDialogClose={handleDialogClose} />
             </div>
         </ThemeProvider>
     );
