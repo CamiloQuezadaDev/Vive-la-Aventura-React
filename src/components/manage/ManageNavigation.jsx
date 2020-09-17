@@ -5,9 +5,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import RoomIcon from '@material-ui/icons/Room';
 
-const ManageIndex = () => {
+
+const ManageNavigation = () => {
 
     const navigate = useNavigate();
 
@@ -19,14 +19,8 @@ const ManageIndex = () => {
                 </ListItemIcon>
                 <ListItemText primary="Dashboard" />
             </ListItem>
-            <ListItem button onClick={() => {    navigate('/dashboard')  }}>
-                <ListItemIcon>
-                    <RoomIcon />
-                </ListItemIcon>
-                <ListItemText primary="Dashboard" />
-            </ListItem>
         </>
     )
 }
 
-export default ManageIndex;
+export default ManageNavigation;

@@ -138,13 +138,11 @@ const IndexPage = () => {
                         )}
                     </Toolbar>
                 </AppBar>
-                <LoadScript googleMapsApiKey='AIzaSyAIc3lygf3YkpNC09MksffMc8_PM89GNKE'>
                     <GoogleMap
                         mapContainerStyle={mapStyles}
-                        zoom={13}
+                        zoom={15}
                         center={defaultCenter}
                     />
-                </LoadScript>
             </div>
         </ThemeProvider>
         

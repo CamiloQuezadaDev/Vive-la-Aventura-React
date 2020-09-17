@@ -24,8 +24,8 @@ import AddIcon from '@material-ui/icons/Add';
 
 import Fab from '@material-ui/core/Fab';
 
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
-
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { MapContext } from '../../contexts/MapContext';
 
 import ManageNavigation from './ManageNavigation';
 import SubsidiaryForm from '../subsidiary/SubsidiaryForm'; 
@@ -139,9 +139,6 @@ const mapStyles = {
     width: "100%"
 }; 
 
-const defaultCenter = {
-    lat: -38.73965, lng: -72.59842
-}
 
 const ManageIndex = () => {
 
@@ -186,6 +183,12 @@ const ManageIndex = () => {
         setOpenDialog(false);
     }
 
+    const { map , setMap } = useContext(MapContext);
+    const [initialRegion  ] = useState({lat: -38.73965, lng: -72.59842})
+
+    const onLoadMap = (map) => {
+        setMap(map);
+    }
 
 
     const { data, refetch  } = useContext(SessionContext); 
@@ -197,7 +200,7 @@ const ManageIndex = () => {
             <div className={classes.root}>
                 <CssBaseline />
                 <AppBar position="absolute" className={clsx(classes.appBar, openDrawer && classes.appBarShift)}>
-                    <Toolbar clasName={classes.toolbar}>
+                    <Toolbar className={classes.toolbar}>
                         <IconButton
                             edge="start"
                             color="inherit"
@@ -277,13 +280,18 @@ const ManageIndex = () => {
                         <ManageNavigation  />
                     </List>
                 </Drawer>
-                <LoadScript googleMapsApiKey='AIzaSyAIc3lygf3YkpNC09MksffMc8_PM89GNKE'>
                     <GoogleMap
                         mapContainerStyle={mapStyles}
-                        zoom={13}
-                        center={defaultCenter}
-                    />
-                </LoadScript>
+                        zoom={15}
+                        center={initialRegion}
+                        onLoad={onLoadMap}
+                    >
+                        <Marker
+                            key="1"
+                            position={{
+                                lat: -38.7415931, lng: -72.5931716
+                            }}/>
+                    </GoogleMap>
                 <Fab color="primary" aria-label="add" className={classes.fabIcon} onClick={handleDialogOpen}>
                     <AddIcon />
                 </Fab>

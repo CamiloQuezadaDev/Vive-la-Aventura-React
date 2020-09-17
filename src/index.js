@@ -9,7 +9,8 @@ import {ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 
-import { SessionProvider } from './contexts/SessionContext'; 
+import { SessionProvider } from './contexts/SessionContext';
+import { MapProvider } from './contexts/MapContext';  
 
 
 const httpLink = createHttpLink({
@@ -41,7 +42,9 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <SessionProvider>
-      <App />
+      <MapProvider>
+        <App />
+      </MapProvider>
     </SessionProvider>
   </ApolloProvider>,
   document.getElementById('root')

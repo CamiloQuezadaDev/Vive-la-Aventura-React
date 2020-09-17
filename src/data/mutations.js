@@ -18,3 +18,24 @@ export const USER_SIGN_IN = gql`
         }
     }
 `;
+
+
+export const CREATE_SUBSIDIARY = gql`
+    mutation createASubsidiary( $input : CreateSubsidiaryInput!){
+        createSubsidiary(input: $input){
+            subsidiary {
+                name
+                address {
+                    id
+                    city
+                    locality
+                    line1
+                    lat
+                    lng
+                }
+            }
+            errors
+            success
+        }
+    }
+`;

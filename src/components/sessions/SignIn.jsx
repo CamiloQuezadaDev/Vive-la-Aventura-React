@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import Container from '@material-ui/core/Container';
-import { CssBaseline, Typography, TextField } from '@material-ui/core';
+import { CssBaseline, Typography, TextField, ThemeProvider, createMuiTheme } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Avatar} from '@material-ui/core';
@@ -20,7 +20,15 @@ const SignIn = () => {
     const [login, updateLogin] = useState({
         email:'',
         password: ''
-    }); 
+    });
+    
+    const theme = createMuiTheme({
+        palette: {
+            primary: {
+                main: '#388e3c'
+            }
+        }
+    });
 
     const [userSignIn] = useMutation(USER_SIGN_IN);
 
@@ -82,7 +90,8 @@ const SignIn = () => {
     const { email, password} = login;
 
     return (
-        <Container component="main" maxWidth="xs">
+        <ThemeProvider theme={theme}>
+            <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div>
                 <div className={classes.paper}>
@@ -138,6 +147,7 @@ const SignIn = () => {
                 </div>
             </div>
         </Container>
+        </ThemeProvider>
     );
 }
 
