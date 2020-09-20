@@ -50,9 +50,9 @@ const SubsidiaryForm = ({ openDialog , handleDialogClose }) => {
                         )}
                         renderOption={(suggestion) => (
                             <div {...getSuggestionItemProps(suggestion)}>
-                              <span>{suggestion.description}</span>
+                                <span>{suggestion.description}</span>
                             </div>
-                          )}
+                        )}
                     />
                             
                         )}

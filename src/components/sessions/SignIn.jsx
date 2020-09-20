@@ -1,11 +1,16 @@
-import React, { useState, useContext } from 'react';
-import Container from '@material-ui/core/Container';
-import { CssBaseline, Typography, TextField, ThemeProvider, createMuiTheme } from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
+import React , { useState, useContext } from 'react';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core'
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import { makeStyles, Avatar} from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { useMutation } from '@apollo/react-hooks';
 import { USER_SIGN_IN } from '../../data/mutations';
@@ -14,8 +19,54 @@ import { useNavigate } from 'react-router-dom';
 
 import { SessionContext } from '../../contexts/SessionContext'; 
 
+import Background from '../../img/sign_in.jpg'
 
-const SignIn = () => {
+function Copyright() {
+    return (
+        <Typography variant="body2" color="textSecondary" align="center">
+            {'Copyright © '}
+            <Link color="inherit" href="/">
+            Vive La Aventura
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    );
+}
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        height: '100vh',
+    },
+    image: {
+        backgroundImage: `url(${Background})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundColor:
+        theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+    },
+    paper: {
+        margin: theme.spacing(8, 4),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: '#43a047',
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+}));
+
+const  SignIn = () => {
+    const classes = useStyles();
 
     const [login, updateLogin] = useState({
         email:'',
@@ -65,88 +116,71 @@ const SignIn = () => {
         });
     }
 
-    const useStyles = makeStyles((theme) => ({
-        paper: {
-            marginTop: theme.spacing(8),
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-        },
-        avatar: {
-            margin: theme.spacing(1),
-            backgroundColor: theme.palette.secondary.main
-        },
-        form: {
-            width: '100%',
-            marginTop: theme.spacing(1),
-        },
-        submit: {
-            margin: theme.spacing(3,0,2)
-        }
-    })); 
-
-    const classes = useStyles();
-
-    const { email, password} = login;
+    const { email, password } = login;
 
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div>
-                <div className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign In
-                    </Typography>
-                    <form className={classes.form} onSubmit={handleSubmit} noValidate>
-                        <TextField 
-                            variant="outlined"
-                            margin="normal"
-                            required 
-                            fullWidth 
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus 
-                            onChange={ handleChange }
-                            value={email}
-                        />
-                        <TextField 
-                            variant="outlined"
-                            margin="normal"
-                            required 
-                            fullWidth 
-                            name="password"
-                            label="password"
-                            type="password"
-                            autoComplete="current-password"
-                            value={password}
-                            onChange={ handleChange }
-                        />
+            <Grid container component="main" className={classes.root}>
+                <CssBaseline />
+                <Grid item xs={false} sm={4} md={7} className={classes.image} />
+                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                    <div className={classes.paper}>
+                        <Avatar className={classes.avatar}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Sign in
+                        </Typography>
+                        <form className={classes.form} onSubmit={handleSubmit} noValidate>
+                            <TextField 
+                                variant="outlined"
+                                margin="normal"
+                                fullWidth 
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus 
+                                onChange={ handleChange }
+                                value={email}
+                            />
 
-                        <Button
-                            type="submit"
-                            fullWidth 
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Sign In 
-                        </Button>
-                        <Grid container>
-                            <Grid item>
-                                <Link href="/signUp">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
+                            <TextField 
+                                variant="outlined"
+                                margin="normal"
+                                required 
+                                fullWidth 
+                                name="password"
+                                label="password"
+                                type="password"
+                                autoComplete="current-password"
+                                value={password}
+                                onChange={ handleChange }
+                            />
+
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                            >
+                                Sign In
+                            </Button>
+
+                            <Grid container>
+                                <Grid item>
+                                    <Link href="/signup">
+                                        {"Don't have an account? Sign Up"}
+                                    </Link>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </form>
-                </div>
-            </div>
-        </Container>
+                            <Box mt={5}>
+                                <Copyright />
+                            </Box>
+                        </form>
+                    </div>
+                </Grid>
+            </Grid>
         </ThemeProvider>
     );
 }

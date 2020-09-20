@@ -24,7 +24,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import Fab from '@material-ui/core/Fab';
 
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 import { MapContext } from '../../contexts/MapContext';
 
 import ManageNavigation from './ManageNavigation';
@@ -183,7 +183,7 @@ const ManageIndex = () => {
         setOpenDialog(false);
     }
 
-    const { map , setMap } = useContext(MapContext);
+    const { setMap } = useContext(MapContext);
     const [initialRegion  ] = useState({lat: -38.73965, lng: -72.59842})
 
     const onLoadMap = (map) => {

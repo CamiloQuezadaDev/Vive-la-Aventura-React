@@ -14,7 +14,7 @@ import Menu from '@material-ui/core/Menu';
 
 import { useNavigate } from 'react-router-dom';
 
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import { GoogleMap } from '@react-google-maps/api';
 
 import { SessionContext} from '../../contexts/SessionContext'; 
 
@@ -128,10 +128,10 @@ const IndexPage = () => {
                             </>
                         ) : (
                         <>
-                                <Button href="/signIn" color="inherit">
+                                <Button href="/signin" color="inherit">
                                     Ingresar
                                 </Button>
-                                <Button href="/signUp" color="inherit">
+                                <Button href="/signup" color="inherit">
                                     Registrarse
                                 </Button>
                             </>

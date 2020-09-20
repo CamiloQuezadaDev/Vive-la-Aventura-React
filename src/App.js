@@ -2,11 +2,12 @@ import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import IndexPage from './components/pages/IndexPage'
+
 import SignIn from './components/sessions/SignIn'
 import SignUp from './components/sessions/SignUp'
 
 
-import { SessionContext} from './contexts/SessionContext'; 
+import { SessionContext } from './contexts/SessionContext'; 
 
 import ManageIndex from './components/manage/ManageIndex';
 
@@ -24,10 +25,10 @@ function App() {
             </Route>
         ) : (
           <>
-            <Route path='/signUp'>
+            <Route path='/signup'>
               <SignUp />
             </Route>
-            <Route path='/signIn'>
+            <Route path='/signin'>
               <SignIn />
             </Route>
           </>
