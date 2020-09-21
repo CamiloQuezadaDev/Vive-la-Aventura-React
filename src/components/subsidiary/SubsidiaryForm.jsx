@@ -15,10 +15,13 @@ import { CREATE_SUBSIDIARY } from '../../data/mutations';
 
 const SubsidiaryForm = ({ openDialog , handleDialogClose }) => {
 
-    const [ address, setAddress ] = useState("");
-    const [addressLoading, setAddressLoading] = useState(false);
 
-    const handleSelect = async value => {}; 
+    const [ address, setAddress ] = useState("");
+    const [addressLoading] = useState(false);
+
+    const handleSelect = async address => {
+        setAddress(address);
+    }; 
 
     const handleSubmit = e => {
         e.preventDefault(); 
@@ -27,6 +30,7 @@ const SubsidiaryForm = ({ openDialog , handleDialogClose }) => {
         <Dialog fullWidth  open={openDialog} onClose={handleDialogClose}>
             <form onSubmit={handleSubmit}>
                 <DialogTitle>Agregar Sucursal</DialogTitle>
+
                 <DialogContent>
                     <PlacesAutocomplete
                         value={address}
@@ -34,28 +38,34 @@ const SubsidiaryForm = ({ openDialog , handleDialogClose }) => {
                         onSelect={handleSelect}
                     >
                         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-                            <Autocomplete 
-                                options={suggestions}
-                                renderInput={(params) => (
-                                    <TextField 
-                                        variant="outlined"
-                                        fullWidth
-                                        label="Dirección"
-                                        name="subsidiary"
-                                        {...getInputProps({
-                                            className: 'location-search-input',
-                                            disabled: addressLoading,
-                                        })}
-                                    />
+
+                            <>
+                                <Autocomplete
+                                    options={suggestions}
+                                    getOptionLabel={(suggestion) => suggestion.description}
+                                    inputValue={address}
+                                    disableClearable
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="Dirección"
+                                            margin="normal"
+                                            variant="outlined"
+                                            {...getInputProps({
+                                                className: 'location-search-input',
+                                                disabled: addressLoading,
+                                            })}
+                                            />
+                                    )}
+                                    renderOption={(suggestion) => (
+                                        <div {...getSuggestionItemProps(suggestion)}>
+                                            <span>{suggestion.description}</span>
+                                        </div>
+                                    )}
+                                />
+                            </>
                         )}
-                        renderOption={(suggestion) => (
-                            <div {...getSuggestionItemProps(suggestion)}>
-                                <span>{suggestion.description}</span>
-                            </div>
-                        )}
-                    />
-                            
-                        )}
+                        
                     </PlacesAutocomplete>
                 </DialogContent>
                 <DialogActions>
