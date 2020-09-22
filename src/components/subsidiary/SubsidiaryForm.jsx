@@ -8,24 +8,48 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+
 import { Button, DialogActions } from '@material-ui/core';
 
 
 import { CREATE_SUBSIDIARY } from '../../data/mutations';
 
-const SubsidiaryForm = ({ openDialog , handleDialogClose }) => {
+const useStyles = makeStyles((theme) => ({
+    icon: {
+        color: theme.palette.text.secondary,
+        marginRight: theme.spacing(2),
+    },
+}));
 
+const SubsidiaryForm = ({ openDialog , setOpenDialog }) => {
 
+    const classes = useStyles();
     const [ address, setAddress ] = useState("");
     const [addressLoading] = useState(false);
 
+    const [disabled,setDisabled] = useState(true); 
+
     const handleSelect = async address => {
         setAddress(address);
+        setDisabled(false);
     }; 
 
     const handleSubmit = e => {
         e.preventDefault(); 
+        setDisabled(true);
+        handleDialogClose();
     }
+
+    const handleDialogClose = () => {
+        setAddress("");
+        setOpenDialog(false);
+
+    }
+
     return ( 
         <Dialog fullWidth  open={openDialog} onClose={handleDialogClose}>
             <form onSubmit={handleSubmit}>
@@ -36,6 +60,9 @@ const SubsidiaryForm = ({ openDialog , handleDialogClose }) => {
                         value={address}
                         onChange={setAddress}
                         onSelect={handleSelect}
+                        searchOptions={
+                            {componentRestrictions: { country: ['chl']}}
+                        }
                     >
                         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
 
@@ -58,9 +85,19 @@ const SubsidiaryForm = ({ openDialog , handleDialogClose }) => {
                                             />
                                     )}
                                     renderOption={(suggestion) => (
-                                        <div {...getSuggestionItemProps(suggestion)}>
-                                            <span>{suggestion.description}</span>
-                                        </div>
+                                        <Grid container alignContent="center">
+                                            <Grid item>
+                                                <LocationOnIcon  className={classes.icon}/>
+                                            </Grid>
+                                            <Grid item xs>
+                                                <div {...getSuggestionItemProps(suggestion)}>
+                                                    <span style={{fontWeight: 400 }}>{suggestion.formattedSuggestion.mainText}</span>
+                                                    <Typography color="textSecondary">
+                                                    {suggestion.formattedSuggestion.secondaryText}
+                                                    </Typography>
+                                                </div>
+                                            </Grid>
+                                        </Grid>
                                     )}
                                 />
                             </>
@@ -70,7 +107,7 @@ const SubsidiaryForm = ({ openDialog , handleDialogClose }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleDialogClose} color="primary">Cancel</Button>
-                    <Button variant="contained" type="submit" color="primary">Agregar</Button>
+                    <Button disabled={disabled} variant="contained" type="submit" color="primary">Agregar</Button>
                 </DialogActions>
             </form>
         </Dialog>

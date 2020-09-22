@@ -179,10 +179,6 @@ const ManageIndex = () => {
         setOpenDialog(true);
     }
 
-    const handleDialogClose = () => {
-        setOpenDialog(false);
-    }
-
     const { setMap } = useContext(MapContext);
     const [initialRegion  ] = useState({lat: -38.73965, lng: -72.59842})
 
@@ -295,7 +291,7 @@ const ManageIndex = () => {
                 <Fab color="primary" aria-label="add" className={classes.fabIcon} onClick={handleDialogOpen}>
                     <AddIcon />
                 </Fab>
-                < SubsidiaryForm  openDialog={openDialog} handleDialogClose={handleDialogClose} />
+                < SubsidiaryForm  openDialog={openDialog} setOpenDialog={setOpenDialog} />
             </div>
         </ThemeProvider>
     );
