@@ -1,5 +1,4 @@
-import React , { useState, useContext } from 'react';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core'
+import React , { useState, useContext , useEffect  } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,7 +16,9 @@ import { USER_SIGN_IN } from '../../data/mutations';
 
 import { useNavigate } from 'react-router-dom';
 
-import { SessionContext } from '../../contexts/SessionContext'; 
+import { SessionContext } from '../../contexts/SessionContext';
+
+import { HeadContext } from '../../contexts/HeadContext';
 
 import Background from '../../img/sign_in.jpg'
 
@@ -73,19 +74,20 @@ const  SignIn = () => {
         password: ''
     });
     
-    const theme = createMuiTheme({
-        palette: {
-            primary: {
-                main: '#388e3c'
-            }
-        }
-    });
-
     const [userSignIn] = useMutation(USER_SIGN_IN);
 
     const navigate = useNavigate();
 
     const { refetch } = useContext(SessionContext); 
+
+    const { setHead } = useContext(HeadContext);
+    
+    useEffect(() => {
+    setHead({
+        title: 'Sign In | Vive la Aventura',
+        });
+    }, [setHead]);
+
 
     const handleChange = e => {
         const {name, value} = e.target; 
@@ -119,7 +121,6 @@ const  SignIn = () => {
     const { email, password } = login;
 
     return (
-        <ThemeProvider theme={theme}>
             <Grid container component="main" className={classes.root}>
                 <CssBaseline />
                 <Grid item xs={false} sm={4} md={7} className={classes.image} />
@@ -181,7 +182,6 @@ const  SignIn = () => {
                     </div>
                 </Grid>
             </Grid>
-        </ThemeProvider>
     );
 }
 

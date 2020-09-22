@@ -1,5 +1,5 @@
-import React , { useState } from 'react'
-import { CircularProgress, createMuiTheme, ThemeProvider } from '@material-ui/core';
+import React , { useState, useEffect, useContext   } from 'react'
+import { CircularProgress } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -24,7 +24,9 @@ import { useMutation,useQuery } from '@apollo/react-hooks';
 import { USER_SIGN_UP } from '../../data/mutations';
 import { SERVICES } from '../../data/queries'; 
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
+
+import { HeadContext } from '../../contexts/HeadContext';;
 
 function Copyright() {
     return (
@@ -39,13 +41,6 @@ function Copyright() {
     );
 }
 
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            main: '#388e3c'
-        }
-    }
-});
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -129,8 +124,16 @@ const SignUp = () => {
         });
     }
 
+    const { setHead } = useContext(HeadContext);
+    
+    useEffect(() => {
+    setHead({
+        title: 'Sign Up | Vive La Aventura',
+        });
+    }, [setHead]);
+
     return (
-        <ThemeProvider theme={theme}>
+        <>
             { loading ? <CircularProgress /> : (
                 <Grid container component="main" className={classes.root}>
                     <CssBaseline />
@@ -250,7 +253,7 @@ const SignUp = () => {
                 </Grid>
             </Grid>
             )}
-        </ThemeProvider>
+        </>
     );
 }
 

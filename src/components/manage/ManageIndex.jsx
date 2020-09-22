@@ -1,8 +1,8 @@
-import React, { useState , useContext} from 'react'
+import React, { useState , useContext , useEffect } from 'react'
 import { SessionContext } from '../../contexts/SessionContext';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx'; 
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'; 
+import { makeStyles } from '@material-ui/core/styles'; 
 import CssBaseline from '@material-ui/core/CssBaseline'; 
 
 import AppBar from '@material-ui/core/AppBar'; 
@@ -26,6 +26,7 @@ import Fab from '@material-ui/core/Fab';
 
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { MapContext } from '../../contexts/MapContext';
+import { HeadContext } from '../../contexts/HeadContext';
 
 import ManageNavigation from './ManageNavigation';
 import SubsidiaryForm from '../subsidiary/SubsidiaryForm'; 
@@ -34,14 +35,6 @@ import SubsidiaryForm from '../subsidiary/SubsidiaryForm';
 
 
 const drawerWidth = 240; 
-
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            main: '#388e3c'
-        }
-    }
-});
 
 const useStyles = makeStyles((theme) =>({
     root: {
@@ -142,6 +135,7 @@ const mapStyles = {
 
 const ManageIndex = () => {
 
+
     const classes = useStyles(); 
     const navigate = useNavigate();
 
@@ -188,11 +182,17 @@ const ManageIndex = () => {
 
 
     const { data, refetch  } = useContext(SessionContext); 
+    const { setHead } = useContext(HeadContext); 
+
+    useEffect(()=> {
+        setHead({
+            title: 'Dashboard'
+        })
+    }, [setHead]);
+
     const loggedIn = data.me !== null; 
 
     return (
-        
-        <ThemeProvider theme={theme}>
             <div className={classes.root}>
                 <CssBaseline />
                 <AppBar position="absolute" className={clsx(classes.appBar, openDrawer && classes.appBarShift)}>
@@ -293,7 +293,6 @@ const ManageIndex = () => {
                 </Fab>
                 < SubsidiaryForm  openDialog={openDialog} setOpenDialog={setOpenDialog} />
             </div>
-        </ThemeProvider>
     );
 }
 

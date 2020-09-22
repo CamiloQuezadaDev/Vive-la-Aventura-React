@@ -75,7 +75,7 @@ const SubsidiaryForm = ({ openDialog , setOpenDialog }) => {
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            label="Dirección"
+                                            label="Buscar dirección"
                                             margin="normal"
                                             variant="outlined"
                                             {...getInputProps({

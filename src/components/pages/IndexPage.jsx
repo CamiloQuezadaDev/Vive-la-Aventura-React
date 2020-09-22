@@ -1,6 +1,6 @@
-import React, { useState, useContext }from 'react'
+import React, { useState, useContext , useEffect }from 'react'
 import { AppBar, IconButton, Typography, Toolbar } from '@material-ui/core';
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
 
@@ -16,7 +16,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { GoogleMap } from '@react-google-maps/api';
 
-import { SessionContext} from '../../contexts/SessionContext'; 
+import { SessionContext} from '../../contexts/SessionContext';
+import { HeadContext } from '../../contexts/HeadContext'; 
 
 
 const IndexPage = () => {
@@ -33,14 +34,6 @@ const IndexPage = () => {
             flexGrow: 1
         }
     }));
-
-    const theme = createMuiTheme({
-        palette: {
-            primary: {
-                main: '#388e3c'
-            }
-        }
-    });
 
     const classes = useStyles();
 
@@ -67,9 +60,18 @@ const IndexPage = () => {
     }
 
     const { data, refetch } = useContext(SessionContext); 
+
+    const { setHead } = useContext(HeadContext);
+    
+    useEffect(() => {
+    setHead({
+        title: 'Vive La Aventura',
+        });
+    }, [setHead]);
+
+
     const loggedIn = data.me !== null; 
     return (
-        <ThemeProvider theme={theme}>
             <div className={classes.root}>
                 <AppBar position="static" color="primary">
                     <Toolbar>
@@ -144,8 +146,6 @@ const IndexPage = () => {
                         center={defaultCenter}
                     />
             </div>
-        </ThemeProvider>
-        
     );
 }
 

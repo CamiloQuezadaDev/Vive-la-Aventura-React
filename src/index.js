@@ -10,7 +10,10 @@ import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 
 import { SessionProvider } from './contexts/SessionContext';
-import { MapProvider } from './contexts/MapContext';  
+import { MapProvider } from './contexts/MapContext';
+import { HeadProvider } from './contexts/HeadContext';
+
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 
 const httpLink = createHttpLink({
@@ -38,13 +41,26 @@ const client = new ApolloClient({
   }
 });
 
+const theme = createMuiTheme({
+  palette: {
+      primary: {
+          main: '#388e3c'
+      }
+  }
+});
+
+
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <SessionProvider>
-      <MapProvider>
-        <App />
-      </MapProvider>
-    </SessionProvider>
+    <ThemeProvider theme={theme}>
+      <SessionProvider>
+          <HeadProvider>
+            <MapProvider>
+              <App />
+            </MapProvider>
+          </HeadProvider>
+      </SessionProvider>
+    </ThemeProvider>
   </ApolloProvider>,
   document.getElementById('root')
 );
