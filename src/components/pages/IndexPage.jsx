@@ -14,7 +14,7 @@ import Menu from '@material-ui/core/Menu';
 
 import { useNavigate } from 'react-router-dom';
 
-import { GoogleMap } from '@react-google-maps/api';
+import { GoogleMap,Marker } from '@react-google-maps/api';
 
 import { SessionContext} from '../../contexts/SessionContext';
 import { HeadContext } from '../../contexts/HeadContext'; 
@@ -144,7 +144,13 @@ const IndexPage = () => {
                         mapContainerStyle={mapStyles}
                         zoom={15}
                         center={defaultCenter}
-                    />
+                    >
+                        <Marker
+                            key="1"
+                            position={{
+                                lat: -38.7415931, lng: -72.5931716
+                            }}/>
+                    </GoogleMap>
             </div>
     );
 }

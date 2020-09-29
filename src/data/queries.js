@@ -18,3 +18,21 @@ export const ME = gql`
         }
     }
 `
+
+export const SUBSIDIARIES_OF_CURRENT_COMPANY = gql`
+    query subsidiaries {
+        subsidiaries {
+            id
+            name
+            address {
+                id
+                city
+                lat
+                lng
+                line1
+                locality
+            }
+        }
+    }
+`;
+

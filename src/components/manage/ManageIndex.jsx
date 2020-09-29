@@ -14,6 +14,7 @@ import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import { CircularProgress } from '@material-ui/core';
 
 import MenuIcon from '@material-ui/icons/Menu' 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -31,7 +32,8 @@ import { HeadContext } from '../../contexts/HeadContext';
 import ManageNavigation from './ManageNavigation';
 import SubsidiaryForm from '../subsidiary/SubsidiaryForm'; 
 
-
+import { SUBSIDIARIES_OF_CURRENT_COMPANY } from '../../data/queries';
+import { useQuery } from '@apollo/react-hooks';
 
 
 const drawerWidth = 240; 
@@ -132,9 +134,23 @@ const mapStyles = {
     width: "100%"
 }; 
 
+const GetSubsidiaries = ({query}) => {
+    const { data, loading } = useQuery(query);
+    if (loading) return <CircularProgress />
+    const {subsidiaries} = data; 
+    return (
+        <> 
+            {subsidiaries.map((subsidiary) => <Marker
+                            key={subsidiary.id}
+                            title={subsidiary.name}
+                            position={{
+                                lat: subsidiary.address.lat, lng: subsidiary.address.lng
+                        }}/>)}
+        </>
+    )
+}
 
 const ManageIndex = () => {
-
 
     const classes = useStyles(); 
     const navigate = useNavigate();
@@ -181,7 +197,7 @@ const ManageIndex = () => {
     }
 
 
-    const { data, refetch  } = useContext(SessionContext); 
+    const { data, loading , refetch  } = useContext(SessionContext); 
     const { setHead } = useContext(HeadContext); 
 
     useEffect(()=> {
@@ -192,6 +208,7 @@ const ManageIndex = () => {
 
     const loggedIn = data.me !== null; 
 
+    
     return (
             <div className={classes.root}>
                 <CssBaseline />
@@ -282,11 +299,7 @@ const ManageIndex = () => {
                         center={initialRegion}
                         onLoad={onLoadMap}
                     >
-                        <Marker
-                            key="1"
-                            position={{
-                                lat: -38.7415931, lng: -72.5931716
-                            }}/>
+                    <GetSubsidiaries query={SUBSIDIARIES_OF_CURRENT_COMPANY} /> 
                     </GoogleMap>
                 <Fab color="primary" aria-label="add" className={classes.fabIcon} onClick={handleDialogOpen}>
                     <AddIcon />
