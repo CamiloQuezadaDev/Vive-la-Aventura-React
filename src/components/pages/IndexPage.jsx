@@ -69,7 +69,6 @@ const IndexPage = () => {
         });
     }, [setHead]);
 
-
     const loggedIn = data.me !== null; 
     return (
             <div className={classes.root}>

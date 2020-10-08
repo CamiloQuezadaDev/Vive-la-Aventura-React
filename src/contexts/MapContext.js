@@ -1,8 +1,10 @@
 import React, { createContext, useState }from 'react';
-import { useLoadScript } from '@react-google-maps/api'; 
+import { useLoadScript } from '@react-google-maps/api';
+import { GOOGLE_MAPS_API_KEY } from '../constants'; 
+
 
 export const GOOGLE_MAPS_API = {
-    googleMapsApiKey: 'AIzaSyAIc3lygf3YkpNC09MksffMc8_PM89GNKE',
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
     language: 'es',
     libraries: ['places'],
 }

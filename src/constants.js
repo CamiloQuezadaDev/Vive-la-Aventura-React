@@ -1,1 +1,2 @@
-export const AUTH_TOKEN = '';
+export const GOOGLE_MAPS_API_KEY = 'AIzaSyAIc3lygf3YkpNC09MksffMc8_PM89GNKE';
+export const GRAPHQL_ENDPOINT = process.env.NODE_ENV === 'production' ?  'https://vive-la-aventura-graphql.herokuapp.com/graphql' : 'http://localhost:3000/graphql' 

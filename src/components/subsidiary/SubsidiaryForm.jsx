@@ -49,6 +49,7 @@ const SubsidiaryForm = ({ openDialog , setOpenDialog }) => {
         setOpenDialog(false);
 
     }
+    
 
     return ( 
         <Dialog fullWidth  open={openDialog} onClose={handleDialogClose}>

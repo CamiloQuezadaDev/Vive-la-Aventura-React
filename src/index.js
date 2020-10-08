@@ -15,9 +15,10 @@ import { HeadProvider } from './contexts/HeadContext';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
+import { GRAPHQL_ENDPOINT } from './constants'; 
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:3000/graphql'
+  uri: GRAPHQL_ENDPOINT
 });
 
 const authLink = setContext((_,{headers}) => {
