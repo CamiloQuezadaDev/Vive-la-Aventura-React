@@ -1,0 +1,1 @@
+export { default as getTypeAddress } from './get-type-googlemaps';

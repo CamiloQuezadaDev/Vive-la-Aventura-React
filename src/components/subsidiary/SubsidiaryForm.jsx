@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 
-import  PlacesAutocomplete  from 'react-places-autocomplete';
+import  PlacesAutocomplete, { geocodeByAddress, getLatLng }  from 'react-places-autocomplete';
 import Autocomplete  from '@material-ui/lab/Autocomplete';
 
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
+
+import { getTypeAddress } from '../../utils';
 
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Grid from '@material-ui/core/Grid';
@@ -15,7 +17,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { Button, DialogActions } from '@material-ui/core';
 
+import { useNavigate } from 'react-router-dom'
 
+import { useMutation } from '@apollo/client';
 import { CREATE_SUBSIDIARY } from '../../data/mutations';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,21 +29,75 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const SubsidiaryForm = ({ openDialog , setOpenDialog }) => {
+const SubsidiaryForm = ({ openDialog , setOpenDialog}) => {
+
+    const navigate = useNavigate();
 
     const classes = useStyles();
     const [ address, setAddress ] = useState("");
+
+    const [ subsidiary, setSubsidiary ] = useState({
+        name:'',
+        line1: '',
+        lat: null,
+        lng: null,
+        city: '',
+        locality: ''
+    });
+
+    const [createSubsidiary] = useMutation(CREATE_SUBSIDIARY); 
+
     const [addressLoading] = useState(false);
 
     const [disabled,setDisabled] = useState(true); 
 
+    const addressParse = (data) => {
+        const locality = getTypeAddress(data, 'locality');
+        const city = getTypeAddress(data, 'administrative_area_level_2');
+        return {
+            city,
+            locality,
+        };
+    };
+
     const handleSelect = async address => {
+
+        const result = await geocodeByAddress(address); 
+        const { lat,lng } = await getLatLng(result[0]);
+
+        const { formatted_address, address_components } = result[0];
+        setSubsidiary({
+            name:'Subsidiary',
+            line1: formatted_address,
+            lat: lat.toString(),
+            lng: lng.toString(),
+            ...addressParse(address_components)
+        })
         setAddress(address);
         setDisabled(false);
     }; 
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault(); 
+
+        await createSubsidiary({
+            variables: {
+                input: subsidiary,
+            },
+        }).then(async({data}) => {
+            console.log(data);
+            const {errors , success } = data.createSubsidiary 
+
+            if(success){
+                navigate('/dashboard');
+            } else {
+                alert(errors);
+            }
+        }).catch(error => {
+            alert(error);
+        });
+
+
         setDisabled(true);
         handleDialogClose();
     }
