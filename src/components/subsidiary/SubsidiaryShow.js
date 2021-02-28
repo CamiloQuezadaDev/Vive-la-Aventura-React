@@ -1,4 +1,5 @@
 import React from 'react';
+import { useMutation } from '@apollo/client';
 import { makeStyles } from '@material-ui/core';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
@@ -13,6 +14,8 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import { DELETE_SUBSIDIARY } from '../../data/mutations'; 
+import { SUBSIDIARIES_OF_CURRENT_COMPANY } from '../../data/queries';
 
 const useStyles = makeStyles((theme) => ({
   dialogTitle: {
@@ -29,6 +32,45 @@ const SubsidiaryShow = ({ openDialog, setOpenDialog, data: subsidiary }) => {
     setOpenDialog(false);
   };
 
+  const [deleteSubsidiary] = useMutation(DELETE_SUBSIDIARY, { 
+    update: (cache,  { data: { deleteSubsidiary }}) => {
+      if (deleteSubsidiary) {
+        let data = cache.readQuery({ query: SUBSIDIARIES_OF_CURRENT_COMPANY });
+        const deletedSubsidiary = deleteSubsidiary.subsidiary; 
+
+        data = data.subsidiariesOfCurrentCompany.filter((subsidiary) => subsidiary.id !== deletedSubsidiary.id);
+
+        cache.writeQuery({
+          query: SUBSIDIARIES_OF_CURRENT_COMPANY,
+          data: {
+            subsidiariesOfCurrentCompany: data,
+          }
+        });
+      }
+    },
+  })
+
+  const handleDelete = async id => {
+    if (window.confirm('¿Estas seguro?')) {
+      await deleteSubsidiary({
+        variables: {
+          input: {
+            id,
+          }
+        }
+      }).then(async ({ data }) => {
+        const { deleted, errors } = data.deleteSubsidiary;
+        if (deleted) {
+          setOpenDialog(false);
+        } else {
+          alert(errors);
+        }
+      }).catch((error) => {
+        alert(error);
+      })
+    }
+  }
+
   return (
     <Dialog fullWidth open={openDialog} onClose={handleDialogClose}>
       <DialogTitle>
@@ -41,7 +83,9 @@ const SubsidiaryShow = ({ openDialog, setOpenDialog, data: subsidiary }) => {
               </IconButton>
             </Tooltip>
             <Tooltip title="Eliminar">
-              <IconButton>
+              <IconButton
+                onClick={ () => handleDelete(subsidiary.id)}
+              >
                 <DeleteIcon />
               </IconButton>
             </Tooltip>

@@ -42,3 +42,51 @@ export const CREATE_SUBSIDIARY = gql`
     }
   }
 `;
+
+export const UPDATE_SUBSIDIARY = gql`
+  mutation updateSubsidiary($input: UpdateSubsidiaryInput!) {
+    updateSubsidiary(input: $input) {
+      subsidiary {
+        id
+        name
+        address {
+          id
+          city
+          locality
+          line1
+          lng
+          lat
+        }
+        company {
+          name
+        }
+      }
+      errors
+      updated
+    }
+  }
+`;
+
+export const DELETE_SUBSIDIARY = gql`
+  mutation deleteSubsidiary($input: DeleteSubsidiaryInput!) {
+    deleteSubsidiary(input: $input) {
+      subsidiary {
+        id
+        name
+        address {
+          id
+          city
+          locality
+          line1
+          lng
+          lat
+        }
+        company {
+          name
+        }
+      }
+      errors
+      deleted
+    }
+  }
+`;
