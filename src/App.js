@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
+import ManageLayout from './components/layouts/ManageLayout'; 
 import IndexPage from './components/pages/IndexPage'
 
 import SignIn from './components/sessions/SignIn'
@@ -21,7 +22,9 @@ function App() {
       <Routes>
         { loggedIn ? (
             <Route path='/dashboard'>
-              <ManageIndex />
+              <ManageLayout>
+                <ManageIndex />
+              </ManageLayout>
             </Route>
         ) : (
           <>
